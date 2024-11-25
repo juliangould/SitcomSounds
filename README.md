@@ -8,7 +8,7 @@ I've always thought life looked more fun in a sitcom. Everyone is beautiful, the
 To make this work, you'll need some hardware. Here's what you'll need, as well as the specific ones I bought:
 + A [reed switch](https://www.amazon.com/dp/B089P28K5V?ref=ppx_yo2ov_dt_b_fed_asin_title). This is nothing more than a small magnetic current detector. When a magnet is near the end of the read switch, the circuit opens and no electric current can flow through. But when no magnet is nearby, the circuit is closed;
 + A [serial USB with wires](https://www.amazon.com/dp/B00LODGRV8?ref=ppx_yo2ov_dt_b_fed_asin_title). This little USB plugin basically exposes the internal connections of a USB port. That's not exactly right, but close enough. There are five pins, labeled "3V3", "TXD", "RXD", "GND", and "+5V". You don't need to know what those mean, but just know that the "TXD" pin transmits data out from the port, and the "RXD" pin receives data into the port;
-+ A spare laptop to run it on
++ A spare Unix laptop to run it on. Unfortunately, this code is currently Unix only;
 + (Optional) USB extender, external speakers, subwoofer, gold audio cables, etc. 
 
 ### Setting up the hardware
@@ -18,15 +18,23 @@ To make this work, you'll need some hardware. Here's what you'll need, as well a
 4) Connect your serial USB adapter (and audio system) to your spare laptop. Keep this on a table very near the door --- the laptop **cannot** be far from the door or the system won't work. You may want a USB extender to keep your laptop off of the floor.
 
 ## How to use this
-Now for the computer side of things
+Now for the coding side of things.
 
 ### Setup
-On your computer, you need to do three things:
+On your computer, first you need to do three things:
 + Make a copy of this repository;
-+ Fill the `sounds` folder with songs and sounds you want to play as mp3s or other audio files;
-+ Edit the `friends.csv` by removing the dummy friends and adding your friends, their bluetooth information, and their song title.
++ Inside the folder, create a new folder called `sounds`. Fill this folder with songs and sounds you want to play as mp3s or other audio files;
++ Edit the `friends.csv` by removing the dummy friends and adding your friends, their bluetooth information, and their song title. More info on `friends.csv` will be given a little later.
 
-More info on `friends.csv` will be given a little later. 
+Next, you need to make sure you have the following python packages installed:
++ `threading`;
++ `os`;
++ `serial`;
++ `pandas`;
++ `datetime`;
++ `random`.
+
+Finally, make sure you have installed `blueutil` on your computer, [available here](https://github.com/toy/blueutil).
 
 ### Running the script
 Open `SitcomSoundsScript.py`. At the top of the file, there are five tunable parameters:
