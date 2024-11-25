@@ -21,12 +21,12 @@ To make this work, you'll need some hardware. Here's what you'll need, as well a
 Now for the computer side of things
 
 ### Setup
-Make a new folder, and fill it with three things:
-+ A copy of `SitcomSoundsScript.py` ;
-+ A folder of songs you want to play, as mp3s or other audio files;
-+ A spreadsheet `Friends.csv` of your friends, their bluetooth information, and their song title.
+On your computer, you need to do three things:
++ Make a copy of this repository;
++ Fill the `sounds` folder with songs and sounds you want to play as mp3s or other audio files;
++ Edit the `friends.csv` by removing the dummy friends and adding your friends, their bluetooth information, and their song title.
 
-More info on `Friends.csv` will be given a little later. 
+More info on `friends.csv` will be given a little later. 
 
 ### Running the script
 Open `SitcomSoundsScript.py`. At the top of the file, there are five tunable parameters:
@@ -34,21 +34,21 @@ Open `SitcomSoundsScript.py`. At the top of the file, there are five tunable par
 + `entryTime`: how long someone has to enter after first being pinged for their song to play (in seconds). If someone is detected and does not enter the door within this time period, their song is removed from the queue;
 + `maxRunTime`: how long the script will run (in hours);
 + `interval`: how long must pass between plays of any person's song (in hours). Usually, a character theme will play for their first appearance in an episode, but not every appearance;
-+ `people`: who you want to have entry music for on this run of the script. If you leave this list empty, it will default to all people in the `Friends.csv`. Names in the list must be the names in the `Friends.csv` file. 
++ `people`: who you want to have entry music for on this run of the script. If you leave this list empty, it will default to all people in the `friends.csv`. Names in the list must be the names in the `friends.csv` file. 
 
 After picking your parameters, simply run the script! The rest will take care of itself. 
 
 ### Giving someone theme music
-To give a friend theme music, you have to do a few things. First, you need to pick a song and add it to the song folder. Second, you need to add your friend to the CSV file `Friends.csv`. This file has three columns:
+To give a friend theme music, you have to do a few things. First, you need to pick a song and add it to the `sounds` folder. Second, you need to add your friend to the CSV file `friends.csv`. This file has three columns:
 1) "Name": this is just the name of your friend for lookup purposes;
 2) "BTid": this is your friend's phone's bluetooth ID. Bluetooth enabled devices have unique identifiers. On an iPhone, you can find this identifier in settings>general>about>Bluetooth. On an Android, it can be found at settings>system>about_device>Bluetooth. It will be formatted like "XX:XX:XX:XX:XX:XX". If your friends will not share this information with you, the system won't work.
-3) "Song": this is just the name of the audio file you picked for them and put in the Songs folder.
+3) "Song": this is just the name of the audio file you picked for them and put in the `sounds` folder.
 
 ## Wait... how does this work?
 Great question. This is pretty hacky and took some effort to figure out. 
 
 ### Detecting your friends
-We set up a basic proximity detector. Your computer needs to know who is about to enter your door in order to play their theme music. To do this, your computer cycles through the bluetooth addresses stored in the `Friends.csv` file and tries to connect to them one by one. The connection will fail since your friend's phone isn't expecting the connection, and your computer will throw an error message. But thankfully, the error message it throws if the device is out of range is different from the message it throws if the device is in range and rejects the connection. Thus we can tell when your friends are nearby. Since Bluetooth is short-range, this basically means we can detect when your friends are about to enter your door.
+We set up a basic proximity detector. Your computer needs to know who is about to enter your door in order to play their theme music. To do this, your computer cycles through the bluetooth addresses stored in the `friends.csv` file and tries to connect to them one by one. The connection will fail since your friend's phone isn't expecting the connection, and your computer will throw an error message. But thankfully, the error message it throws if the device is out of range is different from the message it throws if the device is in range and rejects the connection. Thus we can tell when your friends are nearby. Since Bluetooth is short-range, this basically means we can detect when your friends are about to enter your door.
 
 ### Detecting an open door
 With the reed switch in place, there will be a closed circuit if and only if your door is open. It is surprisingly hard to get a computer to check for a closed circuit. This is where the serial USB comes in. We use two threads. One thread constantly sends out a single character through the "TXD" pin, and the other thread constantly checks for that same character arriving on the "RXD" pin. So long as your door is closed, that character won't make it through the circuit, but the moment your door opens it will. Thus we can detect an open door.
